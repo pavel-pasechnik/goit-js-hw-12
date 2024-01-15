@@ -31,6 +31,14 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: '250',
 });
 
+// Створення нового елементу для завантажувача
+const loaderElement = document.createElement('span');
+loaderElement.className = 'loader is-hidden';
+
+// Додавання завантажувача до списку
+divGallery.append(loaderElement);
+const loaderClass = document.querySelector('.loader');
+
 // Функція виведення зображення на сторінку
 function renderImages(images = []) {
   const insertImages = images.reduce(
