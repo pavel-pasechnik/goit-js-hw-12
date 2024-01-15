@@ -25,6 +25,7 @@ const form = document.querySelector('.search-form');
 const ul = document.querySelector('.images-list');
 const loadMoreBtn = document.querySelector('.load_more_btn');
 const input = document.querySelector('.search-input');
+const divGallery = document.querySelector('.gallery');
 // Ініціалізація SimpleLightbox один раз поза обробником подій
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
