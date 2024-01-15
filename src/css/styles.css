@@ -156,5 +156,31 @@ img {
 
 /* Приховання завантажувача*/
 .is-hidden {
-  display: none;
+  /* display: none; */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.load_more_btn {
+  display: inline-flex;
+  margin-top: 32px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #4e75ff;
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5; /* 150% */
+  letter-spacing: 0.64px;
+}
+
+.load_more_btn:hover {
+  background-color: #6c8cff;
 }
