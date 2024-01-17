@@ -70,6 +70,7 @@ function renderImages(images = []) {
         `,
     ''
   );
+
   ul.insertAdjacentHTML('beforeend', insertImages);
   // Виклик методу для оновлення галереї
   lightbox.refresh();
@@ -90,6 +91,15 @@ function errorAlert() {
   });
 }
 
+// Виклик повідомлення про кінець колекції
+function finishAlert() {
+  iziToast.info({
+    title: '',
+    message: `We're sorry, but you've reached the end of search results.`,
+    position: 'topRight',
+  });
+}
+
 // ============= Пагінація ============ //
 
 // Функція створення запиту
@@ -106,7 +116,7 @@ const getImages = async params => {
 const createGetImagesRequest = q => {
   let page = 1;
   let isLastPage = false;
-  const per_page = 3; // ! TO DO 40
+  const per_page = 40;
 
   return async () => {
     try {
@@ -120,11 +130,15 @@ const createGetImagesRequest = q => {
         throw new Error();
       }
 
+      // Відображаємо кнопку Load More
+      loadMoreBtn.classList.remove('is-hidden');
+
       // Вираховуємо останню сторінку
       if (page >= Math.ceil(totalHits / per_page)) {
         isLastPage = true;
-        //! Приховуємо кнопку Load More
+        // Приховуємо кнопку Load More
         loadMoreBtn.classList.add('is-hidden');
+        finishAlert();
       }
       // Додаємо сторінки для Load More
       page++;
@@ -147,7 +161,7 @@ form.addEventListener('submit', async event => {
   // Видаляємо слухача Load More, якщо він вже викликався до нового пошуку
   if (doFetch != null) {
     loadMoreBtn.removeEventListener('click', doFetch);
-    // !Приховуємо кнопку Load More
+    // Приховуємо кнопку Load More
     loadMoreBtn.classList.add('is-hidden');
   }
 
@@ -163,17 +177,38 @@ form.addEventListener('submit', async event => {
 
   // Функція виведення зображень
   doFetch = async () => {
+    // Приховуємо кнопку Load More
+    loadMoreBtn.classList.add('is-hidden');
+    // Відображення завантажувача
+    loaderClass.classList.remove('is-hidden');
     // Чекаємо на зображення
     const images = await fetchImages();
+    // Приховання завантажувача після отримання результатів
+    loaderClass.classList.add('is-hidden');
 
     // Відмальовуємо зображення
     renderImages(images);
+
+    // TODO заморочка з прокруткою
+    // Отримати посилання на елемент
+    const elementLi = document.querySelector('.images-item');
+
+    // Отримати об'єкт DOMRect
+    const rect = elementLi.getBoundingClientRect();
+
+    // Отримати розміри та позицію
+    const height = (rect.height + 24) * 2;
+    console.log(height);
+    // Гортаємо сторінку вниз
+    window.scrollBy({
+      top: height,
+      left: 0,
+      behavior: 'smooth',
+    });
+    // TODO/
   };
 
   await doFetch();
-
-  // Відображаємо кнопку Load More
-  loadMoreBtn.classList.remove('is-hidden');
 
   // Додаємо слухача Load More з повторним викликом функції виведення зображень
   loadMoreBtn.addEventListener('click', doFetch);
