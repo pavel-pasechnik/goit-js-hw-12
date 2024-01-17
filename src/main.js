@@ -198,7 +198,7 @@ form.addEventListener('submit', async event => {
 
     // Отримати розміри та позицію
     const height = (rect.height + 24) * 2;
-    console.log(height);
+
     // Гортаємо сторінку вниз
     window.scrollBy({
       top: height,
